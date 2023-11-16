@@ -1,0 +1,30 @@
+# pipeline variables
+variables:
+  majorMinorVersion: 1.0
+
+name: $(majorMinorVersion).$(Rev:r)
+
+pool:
+  vmImage: ubuntu-latest
+
+trigger:
+- master
+
+steps:
+
+- task: NuGetCommand@2
+  inputs:
+    command: pack
+    packagesToPack: '**/*.csproj;!**/*.Test.csproj;!**/*.UnitTestProject1.csproj'
+    packDestination: '$(Build.ArtifactStagingDirectory)'
+    versioningScheme: byBuildNumber
+
+- task: NuGetAuthenticate@0
+  displayName: 'NuGet Authenticate'
+
+- task: NuGetCommand@2
+  displayName: 'NuGet push'
+  inputs:
+    command: push
+    publishVstsFeed: '0b7542bc-0376-4ad6-bdeb-042948e7136c'
+    allowPackageConflicts: true
