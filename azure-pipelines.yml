@@ -15,7 +15,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: pack
-    packagesToPack: '**/*.csproj;!**/*.Test.csproj;!**/*.UnitTestProject1.csproj'
+    packagesToPack: '**/ChoPGP.csproj'
     packDestination: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: byBuildNumber
 
